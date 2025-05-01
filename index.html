@@ -1,0 +1,1433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GitBlog - Modern GitHub-based Blogging Platform</title>
+  <meta name="description" content="A beautiful, feature-rich blogging platform powered by GitHub. Write, share, and connect with ease.">
+  <meta name="keywords" content="blog, github, markdown, blogging platform, developer blog">
+  <meta name="author" content="GitBlog">
+  <meta name="theme-color" content="#6366f1">
+  
+  <!-- OpenGraph / Social Media Meta Tags -->
+  <meta property="og:title" content="GitBlog - Modern GitHub-based Blogging Platform">
+  <meta property="og:description" content="A beautiful, feature-rich blogging platform powered by GitHub. Write, share, and connect with ease.">
+  <meta property="og:image" content="https://via.placeholder.com/1200x630">
+  <meta property="og:url" content="https://netanelshriki.github.io/gitblog/">
+  <meta property="og:type" content="website">
+  
+  <!-- Twitter Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="GitBlog - Modern GitHub-based Blogging Platform">
+  <meta name="twitter:description" content="A beautiful, feature-rich blogging platform powered by GitHub. Write, share, and connect with ease.">
+  <meta name="twitter:image" content="https://via.placeholder.com/1200x630">
+  
+  <!-- Favicon -->
+  <link rel="icon" href="https://via.placeholder.com/32x32" type="image/png">
+  
+  <!-- External CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    /* CSS Reset and Base Styles */
+    :root {
+      --primary: #6366f1;
+      --primary-dark: #4f46e5;
+      --secondary: #ec4899;
+      --dark: #1e293b;
+      --light: #f8fafc;
+      --gray: #64748b;
+      --gray-light: #cbd5e1;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
+      --radius: 0.5rem;
+      --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--light);
+      color: var(--dark);
+      line-height: 1.6;
+      transition: var(--transition);
+      overflow-x: hidden;
+    }
+
+    body.dark-mode {
+      --light: #0f172a;
+      --dark: #f8fafc;
+      --gray: #94a3b8;
+      --gray-light: #334155;
+    }
+
+    /* Typography */
+    h1, h2, h3, h4, h5, h6 {
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      margin-bottom: 1.5rem;
+    }
+
+    a {
+      color: var(--primary);
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    a:hover {
+      color: var(--primary-dark);
+    }
+
+    /* Button Styles */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.5rem 1.25rem;
+      border-radius: var(--radius);
+      font-weight: 600;
+      transition: var(--transition);
+      cursor: pointer;
+      border: none;
+      font-size: 0.875rem;
+      background-color: var(--primary);
+      color: white;
+    }
+
+    .btn:hover {
+      background-color: var(--primary-dark);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background-color: var(--secondary);
+    }
+
+    .btn-secondary:hover {
+      background-color: #d946ef;
+    }
+
+    .btn-ghost {
+      background-color: transparent;
+      color: var(--primary);
+      border: 1px solid var(--primary);
+    }
+
+    .btn-ghost:hover {
+      background-color: var(--primary);
+      color: white;
+    }
+
+    .btn-danger {
+      background-color: var(--danger);
+    }
+
+    .btn-danger:hover {
+      background-color: #dc2626;
+    }
+
+    .btn-success {
+      background-color: var(--success);
+    }
+
+    .btn-success:hover {
+      background-color: #059669;
+    }
+
+    .btn-sm {
+      padding: 0.25rem 0.75rem;
+      font-size: 0.75rem;
+    }
+
+    .btn-lg {
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+    }
+
+    .btn i {
+      margin-right: 0.5rem;
+    }
+
+    /* Layout */
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    .main {
+      min-height: calc(100vh - 64px - 80px);
+      padding: 2rem 0;
+    }
+
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      margin: 0 -1rem;
+    }
+
+    .col {
+      flex: 1;
+      padding: 0 1rem;
+    }
+
+    .col-1 { flex: 0 0 8.333333%; max-width: 8.333333%; }
+    .col-2 { flex: 0 0 16.666667%; max-width: 16.666667%; }
+    .col-3 { flex: 0 0 25%; max-width: 25%; }
+    .col-4 { flex: 0 0 33.333333%; max-width: 33.333333%; }
+    .col-5 { flex: 0 0 41.666667%; max-width: 41.666667%; }
+    .col-6 { flex: 0 0 50%; max-width: 50%; }
+    .col-7 { flex: 0 0 58.333333%; max-width: 58.333333%; }
+    .col-8 { flex: 0 0 66.666667%; max-width: 66.666667%; }
+    .col-9 { flex: 0 0 75%; max-width: 75%; }
+    .col-10 { flex: 0 0 83.333333%; max-width: 83.333333%; }
+    .col-11 { flex: 0 0 91.666667%; max-width: 91.666667%; }
+    .col-12 { flex: 0 0 100%; max-width: 100%; }
+
+    /* Header Styles */
+    .header {
+      background-color: var(--light);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      transition: var(--transition);
+    }
+
+    .dark-mode .header {
+      background-color: var(--light);
+      border-bottom: 1px solid var(--gray-light);
+    }
+
+    .header nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 64px;
+    }
+
+    .header .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+    }
+
+    .header .logo i {
+      margin-right: 0.5rem;
+      color: var(--primary);
+    }
+
+    .header .nav-links {
+      display: flex;
+      list-style: none;
+    }
+
+    .header .nav-links li {
+      margin-left: 1.5rem;
+    }
+
+    .header .nav-links a {
+      color: var(--dark);
+      font-weight: 600;
+      position: relative;
+    }
+
+    .header .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background-color: var(--primary);
+      transition: var(--transition);
+    }
+
+    .header .nav-links a:hover::after,
+    .header .nav-links a.active::after {
+      width: 100%;
+    }
+
+    .header .nav-actions {
+      display: flex;
+      align-items: center;
+    }
+
+    .header .nav-actions > * {
+      margin-left: 1rem;
+    }
+
+    .theme-toggle {
+      background: none;
+      border: none;
+      color: var(--dark);
+      font-size: 1.25rem;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .theme-toggle:hover {
+      color: var(--primary);
+      transform: rotate(15deg);
+    }
+
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--dark);
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    /* Hero Section */
+    .hero {
+      padding: 4rem 0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%);
+      border-radius: var(--radius);
+      margin-bottom: 3rem;
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-fill-color: transparent;
+    }
+
+    .hero p {
+      font-size: 1.25rem;
+      max-width: 600px;
+      margin: 0 auto 2rem;
+      color: var(--gray);
+    }
+
+    .hero .btn {
+      margin: 0 0.5rem;
+    }
+
+    .hero .social-proof {
+      margin-top: 3rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .hero .social-proof-item {
+      display: flex;
+      align-items: center;
+      margin: 0 1.5rem;
+    }
+
+    .hero .social-proof-item i {
+      font-size: 1.5rem;
+      color: var(--primary);
+      margin-right: 0.5rem;
+    }
+
+    .hero .social-proof-text {
+      font-weight: 600;
+    }
+
+    .hero .social-proof-number {
+      font-weight: 700;
+    }
+
+    /* Card Styles */
+    .card {
+      background-color: var(--light);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      transition: var(--transition);
+      height: 100%;
+      position: relative;
+      border: 1px solid transparent;
+    }
+
+    .dark-mode .card {
+      border-color: var(--gray-light);
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+
+    .card-image {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .card-content {
+      padding: 1.5rem;
+    }
+
+    .card-title {
+      font-size: 1.25rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .card-meta {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+      font-size: 0.875rem;
+      color: var(--gray);
+    }
+
+    .card-meta > * {
+      display: flex;
+      align-items: center;
+      margin-right: 1rem;
+    }
+
+    .card-meta i {
+      margin-right: 0.25rem;
+    }
+
+    .card-description {
+      margin-bottom: 1.5rem;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 1rem;
+      border-top: 1px solid var(--gray-light);
+    }
+
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      background-color: rgba(99, 102, 241, 0.1);
+      color: var(--primary);
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-right: 0.5rem;
+      margin-bottom: 0.5rem;
+      transition: var(--transition);
+    }
+
+    .tag:hover {
+      background-color: var(--primary);
+      color: white;
+    }
+
+    /* Post Grid */
+    .posts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+
+    /* Post Detail */
+    .post-header {
+      margin-bottom: 2rem;
+    }
+
+    .post-title {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .post-meta {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+      font-size: 0.875rem;
+      color: var(--gray);
+    }
+
+    .post-meta > * {
+      display: flex;
+      align-items: center;
+      margin-right: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .post-meta i {
+      margin-right: 0.5rem;
+    }
+
+    .post-tags {
+      display: flex;
+      flex-wrap: wrap;
+      margin-bottom: 1.5rem;
+    }
+
+    .post-cover {
+      width: 100%;
+      height: 400px;
+      object-fit: cover;
+      border-radius: var(--radius);
+      margin-bottom: 2rem;
+    }
+
+    .post-content {
+      font-size: 1.125rem;
+      line-height: 1.8;
+    }
+
+    .post-content h2,
+    .post-content h3,
+    .post-content h4 {
+      margin-top: 2rem;
+    }
+
+    .post-content img {
+      max-width: 100%;
+      border-radius: var(--radius);
+      margin: 1.5rem 0;
+    }
+
+    .post-content pre {
+      margin: 1.5rem 0;
+      padding: 1rem;
+      background-color: var(--dark);
+      color: var(--light);
+      border-radius: var(--radius);
+      overflow-x: auto;
+    }
+
+    .post-content code {
+      font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+      font-size: 0.875rem;
+    }
+
+    .post-content blockquote {
+      border-left: 4px solid var(--primary);
+      padding-left: 1rem;
+      font-style: italic;
+      margin: 1.5rem 0;
+    }
+
+    .post-footer {
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--gray-light);
+    }
+
+    .post-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+
+    .post-share {
+      display: flex;
+      align-items: center;
+    }
+
+    .post-share span {
+      margin-right: 1rem;
+      font-weight: 600;
+    }
+
+    .post-share a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 2rem;
+      height: 2rem;
+      border-radius: 50%;
+      background-color: var(--primary);
+      color: white;
+      margin-right: 0.5rem;
+      transition: var(--transition);
+    }
+
+    .post-share a:hover {
+      transform: translateY(-3px);
+    }
+
+    /* Comments */
+    .comments {
+      margin-top: 3rem;
+    }
+
+    .comments-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+
+    .comment {
+      background-color: var(--light);
+      border: 1px solid var(--gray-light);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .comment-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .comment-avatar {
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-right: 1rem;
+    }
+
+    .comment-meta {
+      flex: 1;
+    }
+
+    .comment-author {
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .comment-date {
+      font-size: 0.75rem;
+      color: var(--gray);
+    }
+
+    .comment-content {
+      margin-bottom: 1rem;
+    }
+
+    .comment-actions {
+      display: flex;
+      align-items: center;
+    }
+
+    .comment-actions button {
+      background: none;
+      border: none;
+      color: var(--gray);
+      font-size: 0.875rem;
+      margin-right: 1rem;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+    }
+
+    .comment-actions button:hover {
+      color: var(--primary);
+    }
+
+    .comment-actions button i {
+      margin-right: 0.25rem;
+    }
+
+    .comment-form {
+      margin-top: 2rem;
+    }
+
+    /* Form Styles */
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1px solid var(--gray-light);
+      border-radius: var(--radius);
+      background-color: var(--light);
+      color: var(--dark);
+      transition: var(--transition);
+      font-family: inherit;
+      font-size: 1rem;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.25);
+    }
+
+    .dark-mode .form-control {
+      background-color: var(--light);
+      border-color: var(--gray-light);
+    }
+
+    textarea.form-control {
+      min-height: 150px;
+      resize: vertical;
+    }
+
+    .form-actions {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .form-actions .btn {
+      margin-left: 1rem;
+    }
+
+    /* Footer */
+    .footer {
+      background-color: var(--light);
+      border-top: 1px solid var(--gray-light);
+      padding: 2rem 0;
+      margin-top: 3rem;
+    }
+
+    .footer-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+    }
+
+    .footer-logo i {
+      margin-right: 0.5rem;
+      color: var(--primary);
+    }
+
+    .footer-links {
+      display: flex;
+      list-style: none;
+    }
+
+    .footer-links li {
+      margin-left: 1.5rem;
+    }
+
+    .footer-links a {
+      color: var(--gray);
+      transition: var(--transition);
+    }
+
+    .footer-links a:hover {
+      color: var(--primary);
+    }
+
+    .footer-bottom {
+      margin-top: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 2rem;
+      border-top: 1px solid var(--gray-light);
+    }
+
+    .footer-social {
+      display: flex;
+    }
+
+    .footer-social a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 50%;
+      background-color: rgba(99, 102, 241, 0.1);
+      color: var(--primary);
+      margin-left: 0.75rem;
+      transition: var(--transition);
+    }
+
+    .footer-social a:hover {
+      background-color: var(--primary);
+      color: white;
+      transform: translateY(-3px);
+    }
+
+    /* Toast Notifications */
+    .toasts-container {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      z-index: 2000;
+    }
+
+    .toast {
+      display: flex;
+      align-items: center;
+      padding: 1rem;
+      background-color: var(--light);
+      box-shadow: var(--shadow);
+      border-radius: var(--radius);
+      min-width: 300px;
+      max-width: 400px;
+      transform: translateX(100%);
+      animation: slideIn 0.3s forwards, fadeOut 0.3s 4.7s forwards;
+      border-left: 4px solid var(--primary);
+    }
+
+    .toast.success {
+      border-left-color: var(--success);
+    }
+
+    .toast.success .toast-icon {
+      color: var(--success);
+    }
+
+    .toast.error {
+      border-left-color: var(--danger);
+    }
+
+    .toast.error .toast-icon {
+      color: var(--danger);
+    }
+
+    .toast.warning {
+      border-left-color: var(--warning);
+    }
+
+    .toast.warning .toast-icon {
+      color: var(--warning);
+    }
+
+    .toast-icon {
+      font-size: 1.5rem;
+      margin-right: 1rem;
+      color: var(--primary);
+    }
+
+    .toast-content {
+      flex: 1;
+    }
+
+    .toast-title {
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .toast-message {
+      font-size: 0.875rem;
+      color: var(--gray);
+    }
+
+    .toast-close {
+      background: none;
+      border: none;
+      color: var(--gray);
+      font-size: 1rem;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .toast-close:hover {
+      color: var(--danger);
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateX(100%);
+      }
+      to {
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes fadeOut {
+      from {
+        opacity: 1;
+      }
+      to {
+        opacity: 0;
+      }
+    }
+
+    /* Loading Spinner */
+    .spinner-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 5px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: var(--primary);
+      animation: spin 1s ease-in-out infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* Skeleton Loading */
+    .skeleton {
+      background: linear-gradient(90deg, var(--gray-light) 25%, rgba(99, 102, 241, 0.1) 50%, var(--gray-light) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+      border-radius: var(--radius);
+    }
+
+    @keyframes shimmer {
+      0% {
+        background-position: 200% 0;
+      }
+      100% {
+        background-position: -200% 0;
+      }
+    }
+
+    .skeleton-card {
+      height: 320px;
+    }
+
+    .skeleton-header {
+      height: 30px;
+      margin-bottom: 1rem;
+      width: 70%;
+    }
+
+    .skeleton-text {
+      height: 15px;
+      margin-bottom: 0.75rem;
+    }
+
+    .skeleton-text:last-child {
+      width: 80%;
+    }
+
+    /* Modal */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: var(--transition);
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal {
+      background-color: var(--light);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      width: 90%;
+      max-width: 600px;
+      max-height: 90vh;
+      overflow-y: auto;
+      transform: translateY(-50px);
+      opacity: 0;
+      transition: var(--transition);
+    }
+
+    .modal-overlay.active .modal {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem;
+      border-bottom: 1px solid var(--gray-light);
+    }
+
+    .modal-title {
+      font-weight: 700;
+      font-size: 1.25rem;
+      margin: 0;
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      color: var(--gray);
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .modal-close:hover {
+      color: var(--danger);
+    }
+
+    .modal-body {
+      padding: 1.5rem;
+    }
+
+    .modal-footer {
+      padding: 1.5rem;
+      border-top: 1px solid var(--gray-light);
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .modal-footer .btn {
+      margin-left: 1rem;
+    }
+
+    /* Transitions and Animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .fade-in-up {
+      animation: fadeInUp 0.5s ease-out;
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 992px) {
+      .posts-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      }
+    }
+
+    @media (max-width: 768px) {
+      .header .nav-links {
+        display: none;
+      }
+
+      .mobile-menu-btn {
+        display: block;
+      }
+
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+
+      .row {
+        flex-direction: column;
+      }
+
+      .col-1, .col-2, .col-3, .col-4, .col-5, .col-6, 
+      .col-7, .col-8, .col-9, .col-10, .col-11, .col-12 {
+        max-width: 100%;
+      }
+
+      .posts-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-content {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .footer-links {
+        margin-top: 1.5rem;
+        justify-content: center;
+      }
+
+      .footer-links li {
+        margin: 0 0.75rem;
+      }
+
+      .footer-bottom {
+        flex-direction: column;
+      }
+
+      .footer-social {
+        margin-top: 1.5rem;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .container {
+        padding: 0 1rem;
+      }
+
+      .hero {
+        padding: 3rem 0;
+      }
+
+      .hero h1 {
+        font-size: 2rem;
+      }
+
+      .hero p {
+        font-size: 1rem;
+      }
+
+      .hero .btn {
+        display: block;
+        width: 100%;
+        margin: 0.5rem 0;
+      }
+
+      .post-title {
+        font-size: 2rem;
+      }
+    }
+
+    /* Mobile Menu */
+    .mobile-menu {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: var(--light);
+      z-index: 1500;
+      transform: translateX(-100%);
+      transition: transform 0.3s ease-in-out;
+    }
+
+    .mobile-menu.active {
+      transform: translateX(0);
+    }
+
+    .mobile-menu-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem;
+      border-bottom: 1px solid var(--gray-light);
+    }
+
+    .mobile-menu-close {
+      background: none;
+      border: none;
+      color: var(--dark);
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    .mobile-menu-content {
+      padding: 1.5rem;
+    }
+
+    .mobile-menu-links {
+      list-style: none;
+    }
+
+    .mobile-menu-links li {
+      margin-bottom: 1rem;
+    }
+
+    .mobile-menu-links a {
+      display: block;
+      padding: 0.75rem 0;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--dark);
+      border-bottom: 1px solid var(--gray-light);
+    }
+
+    .mobile-menu-footer {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      padding: 1.5rem;
+      border-top: 1px solid var(--gray-light);
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <nav>
+        <a href="#home" class="logo">
+          <i class="fas fa-book-open"></i>
+          GitBlog
+        </a>
+        <ul class="nav-links">
+          <li><a href="#home" class="active">Home</a></li>
+          <li><a href="#posts" id="posts-link">Posts</a></li>
+          <li><a href="#tags" id="tags-link">Tags</a></li>
+          <li><a href="#about" id="about-link">About</a></li>
+          <li><a href="#contact" id="contact-link">Contact</a></li>
+        </ul>
+        <div class="nav-actions">
+          <button id="theme-toggle" class="theme-toggle">
+            <i class="fas fa-moon"></i>
+          </button>
+          <button id="search-toggle" class="btn btn-ghost btn-sm">
+            <i class="fas fa-search"></i>
+            Search
+          </button>
+          <div id="auth-container">
+            <button id="login-btn" class="btn btn-primary btn-sm">
+              <i class="fas fa-sign-in-alt"></i>
+              Login
+            </button>
+          </div>
+          <button class="mobile-menu-btn" id="mobile-menu-toggle">
+            <i class="fas fa-bars"></i>
+          </button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobile-menu">
+    <div class="mobile-menu-header">
+      <a href="#home" class="logo">
+        <i class="fas fa-book-open"></i>
+        GitBlog
+      </a>
+      <button class="mobile-menu-close" id="mobile-menu-close">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="mobile-menu-content">
+      <ul class="mobile-menu-links">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#posts" class="mobile-posts-link">Posts</a></li>
+        <li><a href="#tags" class="mobile-tags-link">Tags</a></li>
+        <li><a href="#about" class="mobile-about-link">About</a></li>
+        <li><a href="#contact" class="mobile-contact-link">Contact</a></li>
+      </ul>
+    </div>
+    <div class="mobile-menu-footer">
+      <button id="mobile-theme-toggle" class="btn btn-ghost btn-sm">
+        <i class="fas fa-moon"></i>
+        Dark Mode
+      </button>
+      <button id="mobile-search-btn" class="btn btn-primary btn-sm">
+        <i class="fas fa-search"></i>
+        Search
+      </button>
+      <button id="mobile-login-btn" class="btn btn-secondary btn-sm">
+        <i class="fas fa-sign-in-alt"></i>
+        Login
+      </button>
+    </div>
+  </div>
+
+  <!-- Search Overlay -->
+  <div class="modal-overlay" id="search-overlay">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 class="modal-title">Search</h3>
+        <button class="modal-close" id="search-close">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <input type="text" class="form-control" id="search-input" placeholder="Search for posts, tags, or keywords...">
+        </div>
+        <div id="search-results"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content Area -->
+  <main class="main">
+    <div class="container">
+      <div id="app"></div>
+    </div>
+  </main>
+
+  <!-- Toast Notifications Container -->
+  <div class="toasts-container" id="toasts-container"></div>
+
+  <!-- Loading Spinner -->
+  <div class="spinner-overlay" id="spinner-overlay">
+    <div class="spinner"></div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <a href="#home" class="footer-logo">
+          <i class="fas fa-book-open"></i>
+          GitBlog
+        </a>
+        <ul class="footer-links">
+          <li><a href="#home">Home</a></li>
+          <li><a href="#posts">Posts</a></li>
+          <li><a href="#tags">Tags</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 GitBlog. All rights reserved.</p>
+        <div class="footer-social">
+          <a href="https://github.com/netanelshriki/gitblog" target="_blank"><i class="fab fa-github"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-linkedin"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Auth Modals -->
+  <div class="modal-overlay" id="login-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 class="modal-title">Login</h3>
+        <button class="modal-close" id="login-close">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="social-auth">
+          <button class="social-auth-btn" id="github-login">
+            <i class="fab fa-github"></i>
+            GitHub
+          </button>
+        </div>
+        <div class="auth-divider">
+          <span class="auth-divider-text">or login with email</span>
+        </div>
+        <form id="login-form">
+          <div class="form-group">
+            <label for="login-email" class="form-label">Email</label>
+            <input type="email" id="login-email" class="form-control" placeholder="Enter your email" required>
+          </div>
+          <div class="form-group">
+            <label for="login-password" class="form-label">Password</label>
+            <input type="password" id="login-password" class="form-control" placeholder="Enter your password" required>
+          </div>
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary" style="width: 100%;">Login</button>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer" style="justify-content: center;">
+        <p>Don't have an account? <a href="#" id="show-register">Register</a></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="register-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 class="modal-title">Register</h3>
+        <button class="modal-close" id="register-close">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="social-auth">
+          <button class="social-auth-btn" id="github-register">
+            <i class="fab fa-github"></i>
+            GitHub
+          </button>
+        </div>
+        <div class="auth-divider">
+          <span class="auth-divider-text">or register with email</span>
+        </div>
+        <form id="register-form">
+          <div class="form-group">
+            <label for="register-name" class="form-label">Name</label>
+            <input type="text" id="register-name" class="form-control" placeholder="Enter your name" required>
+          </div>
+          <div class="form-group">
+            <label for="register-email" class="form-label">Email</label>
+            <input type="email" id="register-email" class="form-control" placeholder="Enter your email" required>
+          </div>
+          <div class="form-group">
+            <label for="register-password" class="form-label">Password</label>
+            <input type="password" id="register-password" class="form-control" placeholder="Enter your password" required>
+          </div>
+          <div class="form-group">
+            <label for="confirm-password" class="form-label">Confirm Password</label>
+            <input type="password" id="confirm-password" class="form-control" placeholder="Confirm your password" required>
+          </div>
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary" style="width: 100%;">Register</button>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer" style="justify-content: center;">
+        <p>Already have an account? <a href="#" id="show-login">Login</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript Dependencies -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.3.0/marked.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-css.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-jsx.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.min.js"></script>
+  
+  <!-- Application JavaScript -->
+  <script src="js/main.js"></script>
+</body>
+</html>
